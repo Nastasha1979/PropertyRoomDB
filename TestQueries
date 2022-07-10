@@ -1,0 +1,413 @@
+-- Complete Employee Information
+
+SELECT	EMP.EmpFirstName, EMP.EmpLastName, EMP.EmpMidInit, EMP.EmpDOB, EMPT.EmpTitle, EMP.EmpStartDate,
+		EMPS.EmpStatus, EMP.EmpType, UEMP.PoliceUnitID, POLUNIT.PoliceUnitName
+FROM	EMPLOYEE as EMP
+		RIGHT OUTER JOIN EMPSTATUS as EMPS
+		ON EMP.EmpStatusID = EMPS.EmpStatusID
+		RIGHT OUTER JOIN EMPTITLE as EMPT
+		ON EMP.EmpTitleID =EMPT.EmpTitleID
+		LEFT OUTER JOIN UNIFORMEMPLOYEE as UEMP
+		ON EMP.EmpID = UEMP.EmpID
+		LEFT OUTER JOIN POLICEUNIT as POLUNIT
+		ON UEMP.PoliceUnitID = POLUNIT.PoliceUnitID;
+
+
+--	Show All Employees Ever Assigned To The Property Room Ordered By Employee Title Descending
+
+SELECT	EMP.EmpFirstName, EMP.EmpLastName, EMP.EmpMidInit, EMPT.EmpTitle, EMPS.EmpStatus
+FROM	EMPLOYEE as EMP
+		RIGHT OUTER JOIN EMPTITLE as EMPT
+		ON EMP.EmpTitleID =EMPT.EmpTitleID
+		RIGHT OUTER JOIN EMPSTATUS as EMPS
+		ON EMP.EmpStatusID = EMPS.EmpStatusID
+WHERE	EMP.EmpType = 'PR'
+ORDER BY	EMPT.EmpTitle DESC;
+
+
+--	Show Active Employees Currently Assigned To The Property Room Ordered By Employee Title Descending
+
+SELECT	EMP.EmpFirstName, EMP.EmpLastName, EMP.EmpMidInit, EMPT.EmpTitle, EMPS.EmpStatus
+FROM	EMPLOYEE as EMP
+		RIGHT OUTER JOIN EMPTITLE as EMPT
+		ON EMP.EmpTitleID =EMPT.EmpTitleID
+		RIGHT OUTER JOIN EMPSTATUS as EMPS
+		ON EMP.EmpStatusID = EMPS.EmpStatusID
+WHERE	EMP.EmpType = 'PR' and EMPS.EmpStatus = 'Active'
+ORDER BY	EMPT.EmpTitle DESC;
+
+
+-- Show Retired Employees Who Were Assigned To The Property Room Ordered By Employee Title Descending
+
+SELECT	EMP.EmpFirstName, EMP.EmpLastName, EMP.EmpMidInit, EMPT.EmpTitle, EMPS.EmpStatus
+FROM	EMPLOYEE as EMP
+		RIGHT OUTER JOIN EMPTITLE as EMPT
+		ON EMP.EmpTitleID =EMPT.EmpTitleID
+		RIGHT OUTER JOIN EMPSTATUS as EMPS
+		ON EMP.EmpStatusID = EMPS.EmpStatusID
+WHERE	EMP.EmpType = 'PR' and EMPS.EmpStatus = 'Retired'
+ORDER BY	EMPT.EmpTitle DESC;
+
+
+-- Show Withdrawn Employees Who Were Assigned To The Property Room Ordered By Employee Title Descending
+
+SELECT	EMP.EmpFirstName, EMP.EmpLastName, EMP.EmpMidInit, EMPT.EmpTitle, EMPS.EmpStatus
+FROM	EMPLOYEE as EMP
+		RIGHT OUTER JOIN EMPTITLE as EMPT
+		ON EMP.EmpTitleID =EMPT.EmpTitleID
+		RIGHT OUTER JOIN EMPSTATUS as EMPS
+		ON EMP.EmpStatusID = EMPS.EmpStatusID
+WHERE	EMP.EmpType = 'PR' and EMPS.EmpStatus = 'Withdrawn'
+ORDER BY	EMPT.EmpTitle DESC;
+
+
+-- Show All Unifored Officers Ever Employeed By Employee Title Descending And Police Unit Name Ascending
+
+SELECT	EMP.EmpFirstName, EMP.EmpLastName, EMP.EmpMidInit, EMPT.EmpTitle, UEMP.PoliceUnitID, POLUNIT.PoliceUnitName, EMPS.EmpStatus
+FROM	EMPLOYEE as EMP
+		RIGHT OUTER JOIN EMPTITLE as EMPT
+		ON EMP.EmpTitleID =EMPT.EmpTitleID
+		RIGHT OUTER JOIN EMPSTATUS as EMPS
+		ON EMP.EmpStatusID = EMPS.EmpStatusID
+		LEFT OUTER JOIN UNIFORMEMPLOYEE as UEMP
+		ON EMP.EmpID = UEMP.EmpID
+		LEFT OUTER JOIN POLICEUNIT as POLUNIT
+		ON UEMP.PoliceUnitID = POLUNIT.PoliceUnitID
+WHERE	EMP.EmpType = 'UE'
+ORDER BY	EMPT.EmpTitle DESC, POLUNIT.PoliceUnitName;
+
+
+-- Show Active Unifored Officers Currently Employeed By Employee Title Descending And Police Unit Name Ascending
+
+SELECT	EMP.EmpFirstName, EMP.EmpLastName, EMP.EmpMidInit, EMPT.EmpTitle, UEMP.PoliceUnitID, POLUNIT.PoliceUnitName, EMPS.EmpStatus
+FROM	EMPLOYEE as EMP
+		RIGHT OUTER JOIN EMPTITLE as EMPT
+		ON EMP.EmpTitleID =EMPT.EmpTitleID
+		RIGHT OUTER JOIN EMPSTATUS as EMPS
+		ON EMP.EmpStatusID = EMPS.EmpStatusID
+		LEFT OUTER JOIN UNIFORMEMPLOYEE as UEMP
+		ON EMP.EmpID = UEMP.EmpID
+		LEFT OUTER JOIN POLICEUNIT as POLUNIT
+		ON UEMP.PoliceUnitID = POLUNIT.PoliceUnitID
+WHERE	EMP.EmpType = 'UE' and EMPS.EmpStatus = 'Active'
+ORDER BY	EMPT.EmpTitle DESC, POLUNIT.PoliceUnitName;
+
+
+-- Show Retired Unifored Officers Currently Employeed By Employee Title Descending And Police Unit Name Ascending
+/* There are no Retired Unifored Officers in the database. This query will not display any information until one of the
+   current officers retires.*/
+
+SELECT	EMP.EmpFirstName, EMP.EmpLastName, EMP.EmpMidInit, EMPT.EmpTitle, UEMP.PoliceUnitID, POLUNIT.PoliceUnitName, EMPS.EmpStatus
+FROM	EMPLOYEE as EMP
+		RIGHT OUTER JOIN EMPTITLE as EMPT
+		ON EMP.EmpTitleID =EMPT.EmpTitleID
+		RIGHT OUTER JOIN EMPSTATUS as EMPS
+		ON EMP.EmpStatusID = EMPS.EmpStatusID
+		LEFT OUTER JOIN UNIFORMEMPLOYEE as UEMP
+		ON EMP.EmpID = UEMP.EmpID
+		LEFT OUTER JOIN POLICEUNIT as POLUNIT
+		ON UEMP.PoliceUnitID = POLUNIT.PoliceUnitID
+WHERE	EMP.EmpType = 'UE' and EMPS.EmpStatus = 'Retired'
+ORDER BY	EMPT.EmpTitle DESC, POLUNIT.PoliceUnitName;
+
+
+-- Show Withdrawn Unifored Officers Currently Employeed By Employee Title Descending And Police Unit Name Ascending
+/* There are no Withdrawn Unifored Officers in the database. This query will not display any information until one of the
+   current officers is withdrawn.*/
+
+SELECT	EMP.EmpFirstName, EMP.EmpLastName, EMP.EmpMidInit, EMPT.EmpTitle, UEMP.PoliceUnitID, POLUNIT.PoliceUnitName, EMPS.EmpStatus
+FROM	EMPLOYEE as EMP
+		RIGHT OUTER JOIN EMPTITLE as EMPT
+		ON EMP.EmpTitleID =EMPT.EmpTitleID
+		RIGHT OUTER JOIN EMPSTATUS as EMPS
+		ON EMP.EmpStatusID = EMPS.EmpStatusID
+		LEFT OUTER JOIN UNIFORMEMPLOYEE as UEMP
+		ON EMP.EmpID = UEMP.EmpID
+		LEFT OUTER JOIN POLICEUNIT as POLUNIT
+		ON UEMP.PoliceUnitID = POLUNIT.PoliceUnitID
+WHERE	EMP.EmpType = 'UE' and EMPS.EmpStatus = 'Withdrawn'
+ORDER BY	EMPT.EmpTitle DESC, POLUNIT.PoliceUnitName;
+
+
+-- Show All Inventory Ever Stored And Its Location Within The Police Department
+
+SELECT	INV.InvItemType, INV.InvDescription, INV.InvDateReceived, LOC.LocationCategory, LOC.LocationName, LOC.LocationDescription,
+		INV.InvCategory, RET.RetentionName
+FROM	INVENTORY as INV
+		LEFT OUTER JOIN LOCATION as LOC
+		ON INV.LocationID = LOC.LocationID
+		LEFT OUTER JOIN RETENTION as RET
+		ON INV.RetentionID = RET.RetentionID
+ORDER BY	LOC.LocationDescription, INV.InvCategory;
+
+
+-- Show ALL Inventory Ever Entered As Evidence And Its Location Within The Police Department
+
+SELECT	INV.InvItemType, INV.InvDescription, INV.InvDateReceived, LOC.LocationCategory, LOC.LocationName, LOC.LocationDescription,
+		INV.InvCategory, RET.RetentionName
+FROM	INVENTORY as INV
+		LEFT OUTER JOIN LOCATION as LOC
+		ON INV.LocationID = LOC.LocationID
+		LEFT OUTER JOIN RETENTION as RET
+		ON INV.RetentionID = RET.RetentionID
+WHERE	INV.InvCategory = 'Evidence'
+ORDER BY	LOC.LocationDescription, INV.InvCategory;
+
+
+-- Show ALL Inventory Currently Entered As Evidence And Its Location Within The Police Department
+
+SELECT	INV.InvItemType, INV.InvDescription, INV.InvDateReceived, LOC.LocationCategory, LOC.LocationName, LOC.LocationDescription,
+		INV.InvCategory, RET.RetentionName
+FROM	INVENTORY as INV
+		LEFT OUTER JOIN LOCATION as LOC
+		ON INV.LocationID = LOC.LocationID
+		LEFT OUTER JOIN RETENTION as RET
+		ON INV.RetentionID = RET.RetentionID
+WHERE	INV.InvCategory = 'Evidence' and LOC.LocationCategory != 'Purged'
+ORDER BY	LOC.LocationDescription, INV.InvCategory;
+
+
+-- Show ALL Inventory Ever Entered As Found And Its Location Within The Police Department
+
+SELECT	INV.InvItemType, INV.InvDescription, INV.InvDateReceived, LOC.LocationCategory, LOC.LocationName, LOC.LocationDescription,
+		INV.InvCategory, RET.RetentionName
+FROM	INVENTORY as INV
+		LEFT OUTER JOIN LOCATION as LOC
+		ON INV.LocationID = LOC.LocationID
+		LEFT OUTER JOIN RETENTION as RET
+		ON INV.RetentionID = RET.RetentionID
+WHERE	INV.InvCategory = 'Found'
+ORDER BY	LOC.LocationDescription, INV.InvCategory;
+
+
+-- Show ALL Inventory Currently Entered As Found And Its Location Within The Police Department
+
+SELECT	INV.InvItemType, INV.InvDescription, INV.InvDateReceived, LOC.LocationCategory, LOC.LocationName, LOC.LocationDescription,
+		INV.InvCategory, RET.RetentionName
+FROM	INVENTORY as INV
+		LEFT OUTER JOIN LOCATION as LOC
+		ON INV.LocationID = LOC.LocationID
+		LEFT OUTER JOIN RETENTION as RET
+		ON INV.RetentionID = RET.RetentionID
+WHERE	INV.InvCategory = 'Found' and LOC.LocationCategory != 'Purged'
+ORDER BY	LOC.LocationDescription, INV.InvCategory;
+
+
+-- Show ALL Inventory Ever Entered As Personal And Its Location Within The Police Department
+
+SELECT	INV.InvItemType, INV.InvDescription, INV.InvDateReceived, LOC.LocationCategory, LOC.LocationName, LOC.LocationDescription,
+		INV.InvCategory, RET.RetentionName
+FROM	INVENTORY as INV
+		LEFT OUTER JOIN LOCATION as LOC
+		ON INV.LocationID = LOC.LocationID
+		LEFT OUTER JOIN RETENTION as RET
+		ON INV.RetentionID = RET.RetentionID
+WHERE	INV.InvCategory = 'Personal'
+ORDER BY	LOC.LocationDescription, INV.InvCategory;
+
+
+-- Show ALL Inventory Currently Entered As Personal And Its Location Within The Police Department
+
+SELECT	INV.InvItemType, INV.InvDescription, INV.InvDateReceived, LOC.LocationCategory, LOC.LocationName, LOC.LocationDescription,
+		INV.InvCategory, RET.RetentionName
+FROM	INVENTORY as INV
+		LEFT OUTER JOIN LOCATION as LOC
+		ON INV.LocationID = LOC.LocationID
+		LEFT OUTER JOIN RETENTION as RET
+		ON INV.RetentionID = RET.RetentionID
+WHERE	INV.InvCategory = 'Personal' and LOC.LocationCategory != 'Purged'
+ORDER BY	LOC.LocationDescription, INV.InvCategory;
+
+
+-- Open Cases
+
+SELECT	CN.CaseNoID, CN.CaseNoOpenDate, CN.CaseNoStatus, PU.PoliceUnitName, EMP.EmpFirstName, EMP.EmpLastName, INV.InvItemType, INV.InvDescription,
+		LOC.LocationCategory, LOC.LocationName
+FROM	CASENO as CN
+		LEFT OUTER JOIN POLICEUNIT as PU
+		ON CN.PoliceUnitID = PU.PoliceUnitID
+		LEFT OUTER JOIN EMPLOYEE as EMP
+		ON CN.EmpID = EMP.EmpID
+		LEFT OUTER JOIN EVIDENCE as EV
+		ON CN.CaseNoID = EV.CaseNoID
+		LEFT OUTER JOIN INVENTORY as INV
+		ON EV.InvID = INV.InvID
+		LEFT OUTER JOIN LOCATION as LOC
+		ON INV.LocationID = LOC.LocationID
+WHERE	CN.CaseNoStatus = 'Open';
+
+
+-- Closed Cases
+
+SELECT	CN.CaseNoID, CN.CaseNoOpenDate, CN.CaseNoStatus, PU.PoliceUnitName, EMP.EmpFirstName, EMP.EmpLastName, INV.InvItemType, INV.InvDescription,
+		LOC.LocationCategory, LOC.LocationName
+FROM	CASENO as CN
+		LEFT OUTER JOIN POLICEUNIT as PU
+		ON CN.PoliceUnitID = PU.PoliceUnitID
+		LEFT OUTER JOIN EMPLOYEE as EMP
+		ON CN.EmpID = EMP.EmpID
+		LEFT OUTER JOIN EVIDENCE as EV
+		ON CN.CaseNoID = EV.CaseNoID
+		LEFT OUTER JOIN INVENTORY as INV
+		ON EV.InvID = INV.InvID
+		LEFT OUTER JOIN LOCATION as LOC
+		ON INV.LocationID = LOC.LocationID
+WHERE	CN.CaseNoStatus = 'Closed';
+
+
+-- Total Currency Counts By Inventory ID.
+
+SELECT	CUR.InvID, CUR.CurrBills, CUR.CurrQuarters, CUR.CurrDimes, CUR.CurrNickels, CUR.CurrPennies, LOC.LocationCategory, LOC.LocationName,
+		RET.RetentionName
+FROM	CURRENCY as CUR
+		LEFT OUTER JOIN INVENTORY as INV
+		ON CUR.InvID = INV.InvID
+		LEFT OUTER JOIN LOCATION as LOC
+		ON INV.LocationID = LOC.LocationID
+		LEFT OUTER JOIN RETENTION as RET
+		ON INV.RetentionID = RET.RetentionID;
+
+
+-- DNA Kit Testing Status For Every Kit Ever Submitted by Inventory ID
+
+SELECT	DK.InvID, DK.DNAOwner, DK.DNATestingStatus, LOC.LocationCategory, LOC.LocationName, RET.RetentionName
+FROM	DNAKIT as DK
+		LEFT OUTER JOIN INVENTORY as INV
+		ON DK.InvID = INV.InvID
+		LEFT OUTER JOIN LOCATION as LOC
+		ON INV.LocationID = LOC.LocationID
+		LEFT OUTER JOIN RETENTION as RET
+		ON INV.RetentionID = RET.RetentionID;
+
+
+-- DNA Kit Testing Status for Every Kit Ever Submitted That Has Not Been Tested
+
+SELECT	DK.InvID, DK.DNAOwner, DK.DNATestingStatus, LOC.LocationCategory, LOC.LocationName, RET.RetentionName
+FROM	DNAKIT as DK
+		LEFT OUTER JOIN INVENTORY as INV
+		ON DK.InvID = INV.InvID
+		LEFT OUTER JOIN LOCATION as LOC
+		ON INV.LocationID = LOC.LocationID
+		LEFT OUTER JOIN RETENTION as RET
+		ON INV.RetentionID = RET.RetentionID
+WHERE	DK.DNATestingStatus = 'N';
+
+
+-- DNA Kit Testing Status for Every Kit Ever Subbitted That Has Been Tested
+
+SELECT	DK.InvID, DK.DNAOwner, DK.DNATestingStatus, LOC.LocationCategory, LOC.LocationName, RET.RetentionName
+FROM	DNAKIT as DK
+		LEFT OUTER JOIN INVENTORY as INV
+		ON DK.InvID = INV.InvID
+		LEFT OUTER JOIN LOCATION as LOC
+		ON INV.LocationID = LOC.LocationID
+		LEFT OUTER JOIN RETENTION as RET
+		ON INV.RetentionID = RET.RetentionID
+WHERE	DK.DNATestingStatus = 'Y';
+
+
+-- Firearms Currently In Inventory
+
+SELECT	FA.FireMake, FA.FireModel, FA.FireSerialNo, FA.FireRifleOrHandgun, LOC.LocationCategory, LOC.LocationName, RET.RetentionName
+FROM	FIREARMS as FA
+		LEFT OUTER JOIN INVENTORY as INV
+		ON FA.InvID = INV.InvID
+		LEFT OUTER JOIN LOCATION as LOC
+		ON INV.LocationID = LOC.LocationID
+		LEFT OUTER JOIN RETENTION as RET
+		ON INV.RetentionID = RET.RetentionID;
+
+
+-- Found Property: Owner Located
+
+SELECT	FP.FPOwnerFirstName, FP.FPOwnerLastName, FP.FPOwnerPhoneNo, FP.FPOwnerAddress, INV.InvDescription, LOC.LocationCategory, LOC.LocationName,
+		RET.RetentionName
+FROM	INVENTORY as INV
+		LEFT OUTER JOIN FOUNDPROPERTY as FP
+		ON INV.InvID = FP.InvID
+		LEFT OUTER JOIN LOCATION as LOC
+		ON INV.LocationID = LOC.LocationID
+		LEFT OUTER JOIN RETENTION as RET
+		ON INV.RetentionID = RET.RetentionID
+WHERE	FP.FPOwnerIdentified = 'Y';
+
+
+-- Found Property: Owner Not Located
+
+SELECT	FP.InvID, INV.InvDescription, LOC.LocationCategory, LOC.LocationName, EMP.EmpFirstName, EMP.EmpLastName, RET.RetentionName
+FROM	INVENTORY as INV
+		LEFT OUTER JOIN FOUNDPROPERTY as FP
+		ON INV.InvID = FP.InvID
+		LEFT OUTER JOIN LOCATION as LOC
+		ON INV.LocationID = LOC.LocationID
+		LEFT OUTER JOIN EMPLOYEE as EMP
+		ON FP.EmpID = EMP.EmpID
+		LEFT OUTER JOIN RETENTION as RET
+		ON INV.RetentionID = RET.RetentionID
+WHERE	FP.FPOwnerIdentified = 'N';
+
+
+-- Narcotics Currently In Inventory
+
+SELECT	NAR.NarType, NAR.NarWeight, NAR.NarLabTestingRequired, LOC.LocationCategory, LOC.LocationName, RET.RetentionName
+FROM	INVENTORY as INV
+		RIGHT OUTER JOIN NARCOTICS as NAR
+		ON INV.InvID = NAR.InvID
+		LEFT OUTER JOIN LOCATION as LOC
+		ON INV.LocationID = LOC.LocationID
+		LEFT OUTER JOIN RETENTION as RET
+		ON INV.RetentionID = RET.RetentionID
+ORDER BY	NAR.NarType;
+
+
+-- Narcotics Currently In Inventory Still Needing To Be Tested
+
+SELECT	NAR.NarType, NAR.NarWeight, NAR.NarLabTestingRequired, LOC.LocationCategory, LOC.LocationName, RET.RetentionName
+FROM	INVENTORY as INV
+		RIGHT OUTER JOIN NARCOTICS as NAR
+		ON INV.InvID = NAR.InvID
+		LEFT OUTER JOIN LOCATION as LOC
+		ON INV.LocationID = LOC.LocationID
+		LEFT OUTER JOIN RETENTION as RET
+		ON INV.RetentionID = RET.RetentionID
+WHERE	NAR.NarLabTestingRequired = 'Y'
+ORDER BY	NAR.NarType;
+
+
+-- Narcotics Currently In Inventory: Testing Completed
+/* This query will return no results because all of the narcotics currently in inventory still has to be tested */
+
+SELECT	NAR.NarType, NAR.NarWeight, NAR.NarLabTestingRequired, LOC.LocationCategory, LOC.LocationName, RET.RetentionName
+FROM	INVENTORY as INV
+		RIGHT OUTER JOIN NARCOTICS as NAR
+		ON INV.InvID = NAR.InvID
+		LEFT OUTER JOIN LOCATION as LOC
+		ON INV.LocationID = LOC.LocationID
+		LEFT OUTER JOIN RETENTION as RET
+		ON INV.RetentionID = RET.RetentionID
+WHERE	NAR.NarLabTestingRequired = 'N'
+ORDER BY	NAR.NarType;
+
+
+-- Person Property Currently In Inventory
+/* Personal property is property confiscated from know persons */
+
+SELECT	PP.PPOwnerFirstName, PP.PPOwnerLastName, PP.PPOwnerPhoneNo, PP.PPOwnerAddress, LOC.LocationCategory, LOC.LocationName,
+		EMP.EmpFirstName, EMP.EmpLastName, RET.RetentionName
+FROM	INVENTORY as INV
+		RIGHT OUTER JOIN PERSONALPROPERTY as PP
+		ON INV.InvID = PP.InvID
+		LEFT OUTER JOIN LOCATION as LOC
+		ON INV.LocationID = LOC.LocationID
+		LEFT OUTER JOIN EMPLOYEE as EMP
+		ON PP.EmpID = EMP.EmpID
+		LEFT OUTER JOIN RETENTION as RET
+		ON INV.RetentionID = RET.RetentionID
+ORDER BY	PP.PPOwnerFirstName;
+
+
+-- Current Police Units
+
+SELECT	PU.PoliceUnitID, PU.PoliceUnitName, PU.PoliceUnitPhoneNo, PU.PoliceUnitEmail
+FROM	POLICEUNIT as PU
+ORDER BY	PU.PoliceUnitID;
